@@ -1,12 +1,13 @@
-const Express = require("express");
-const { workoutLogController } = require(".");
-const router = Express.Router();
+const router = require("express").Router();
 const { UserModel } = require("../models");
+const { UniqueConstraintError }= require("sequelize/lib/errors");
+const jwt = require ("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 router.post("/register", async (req, res) => {
     let { username, password } = req.body.user;
     try{
-    const User = await workoutLogController.create({
+    const User = await logController.create({
         username,
         password: bcrypt.hashSync(password, 13),
     });
@@ -29,12 +30,12 @@ router.post("/register", async (req, res) => {
     }
 }
 router.post("/login", async (req, res) => {
-    let { email, password } = req.body.animal;
+    let { username, password } = req.body.log;
 
     try{
         const loginUser = await UserModel.findOne({
             where: {
-                email: email,
+                username: username,
             },
         });
         if (loginUser) {

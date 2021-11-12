@@ -1,14 +1,17 @@
+require("dotenv").config();
 const Express = require("express");
 const app = Express();
 const dbConnection = require("./db");
 
-const controllers = require(".");
+app.use(require('./middleware/headers'));
+const controllers = require("./controllers");
 
 app.use(Express.json());
 
-app.use("/workoutlog", controllers.workoutLogController);
-app.use("/user", controllers.usercontroller);
+app.use("/user", controllers.userController);
 
+app.use(require("./middleware/validate-jwt"));
+app.use("/log", controllers.logController);
 dbConnection.authenticate()
     .then(() => dbConnection.sync())
     .then(() => {
