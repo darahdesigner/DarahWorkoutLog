@@ -1,3 +1,7 @@
 module.exports = {
-    workoutLogController: require("./workoutLogController"),
+    userController: require('./userController'),
+    workoutLogController: require("./controllers/workoutLogController"),
 };
+// const UserModel = require("./user");
+
+// module.exports = { UserModel };
